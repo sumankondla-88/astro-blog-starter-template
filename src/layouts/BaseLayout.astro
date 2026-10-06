@@ -1,0 +1,21 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ConsentBanner from "../components/ConsentBanner.astro";
+
+type Props = Parameters<typeof BaseHead>[0];
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+	<head>
+		<BaseHead {...Astro.props} />
+	</head>
+	<body>
+		<Header />
+		<slot />
+		<Footer />
+		<ConsentBanner />
+	</body>
+</html>

@@ -1,0 +1,74 @@
+---
+const enabled = import.meta.env.PROD && !!import.meta.env.PUBLIC_GA_ID;
+---
+
+{
+	enabled && (
+		<div class="consent" id="consent" hidden role="region" aria-label="Analytics consent">
+			<p>I use Google Analytics to see which posts get read. Allow analytics cookies?</p>
+			<div class="actions">
+				<button type="button" class="pill" data-consent="denied">Decline</button>
+				<button type="button" class="btn" data-consent="granted">Allow</button>
+			</div>
+		</div>
+	)
+}
+
+<style>
+	.consent {
+		position: fixed;
+		z-index: 30;
+		left: 16px;
+		right: 16px;
+		bottom: 16px;
+		max-width: 520px;
+		background: var(--bg);
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		padding: 16px 18px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px 16px;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 14px;
+	}
+	.consent[hidden] {
+		display: none;
+	}
+	p {
+		margin: 0;
+		color: var(--muted);
+		flex: 1 1 240px;
+	}
+	.actions {
+		display: flex;
+		gap: 8px;
+	}
+	.actions :global(.pill),
+	.actions :global(.btn) {
+		padding: 8px 14px;
+		font-size: 14px;
+	}
+</style>
+
+<script>
+	const el = document.getElementById("consent");
+	if (el) {
+		let stored: string | null = null;
+		try {
+			stored = localStorage.getItem("sk-consent");
+		} catch {}
+		if (!stored) el.hidden = false;
+		el.querySelectorAll<HTMLButtonElement>("[data-consent]").forEach((b) =>
+			b.addEventListener("click", () => {
+				const v = b.dataset.consent!;
+				try {
+					localStorage.setItem("sk-consent", v);
+				} catch {}
+				(window as any).gtag?.("consent", "update", { analytics_storage: v });
+				el.hidden = true;
+			}),
+		);
+	}
+</script>

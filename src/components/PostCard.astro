@@ -1,0 +1,51 @@
+---
+import Cover from "./Cover.astro";
+import { categoryBySlug, formatDate, type Post } from "../lib/posts";
+
+interface Props {
+	post: Post;
+}
+const { post } = Astro.props;
+const { data } = post;
+const href = `/blog/${post.id}/`;
+---
+
+<article class="card">
+	<a href={href} class="cover-link" tabindex="-1" aria-hidden="true"><Cover src={data.heroImage} category={data.category} /></a>
+	<div class="eyebrow">{categoryBySlug(data.category).label} · {data.format}{data.draft && " · DRAFT"}</div>
+	<h3><a href={href}>{data.title}</a></h3>
+	<p>{data.description}</p>
+	<div class="mono date">{formatDate(data.pubDate)}</div>
+</article>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		min-width: 0;
+	}
+	.cover-link {
+		display: block;
+		margin-bottom: 6px;
+	}
+	h3 {
+		font-size: 21px;
+		line-height: 1.25;
+		letter-spacing: -0.015em;
+		text-wrap: balance;
+	}
+	h3 a {
+		text-decoration: none;
+	}
+	p {
+		margin: 0;
+		font-size: 15px;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.date {
+		font-size: 12px;
+		color: var(--faint);
+	}
+</style>

@@ -1,0 +1,47 @@
+---
+import { publicFileExists, categoryBySlug } from "../lib/posts";
+
+interface Props {
+	src?: string;
+	category: string;
+	ratio?: string; // CSS aspect-ratio, e.g. "3/2"
+	radius?: number;
+	eager?: boolean;
+}
+const { src, category, ratio = "3/2", radius = 12, eager = false } = Astro.props;
+const has = publicFileExists(src);
+const label = categoryBySlug(category).label;
+---
+
+<div class="cover" style={`aspect-ratio:${ratio};border-radius:${radius}px`}>
+	{
+		has ? (
+			<img src={src} alt="" loading={eager ? "eager" : "lazy"} decoding="async" />
+		) : (
+			<span class="mono fallback">{label}</span>
+		)
+	}
+</div>
+
+<style>
+	.cover {
+		width: 100%;
+		overflow: hidden;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		display: flex;
+		align-items: flex-end;
+	}
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.fallback {
+		padding: 16px 18px;
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--faint);
+	}
+</style>

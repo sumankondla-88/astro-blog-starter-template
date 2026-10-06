@@ -1,0 +1,80 @@
+---
+interface Props {
+	url: string;
+	title: string;
+}
+const { url, title } = Astro.props;
+const u = encodeURIComponent(url);
+const t = encodeURIComponent(title);
+const links = [
+	{ id: "linkedin", label: "LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
+	{ id: "facebook", label: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+	{ id: "x", label: "X", href: `https://twitter.com/intent/tweet?url=${u}&text=${t}` },
+];
+---
+
+<div class="share" data-url={url} data-title={title}>
+	<span class="mono label">Share</span>
+	{links.map((l) => <a class="chip" href={l.href} target="_blank" rel="noopener noreferrer" data-share={l.id}>{l.label}</a>)}
+	<button class="chip" type="button" data-copy-link>Copy link</button>
+</div>
+
+<style>
+	.share {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+	}
+	.label {
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--faint);
+		margin-right: 4px;
+	}
+	.chip {
+		padding: 6px 12px;
+		font: inherit;
+		font-size: 14px;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: transparent;
+		color: var(--muted);
+		text-decoration: none;
+		cursor: pointer;
+	}
+	.chip:hover {
+		color: var(--fg);
+		background: var(--surface);
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>(".share").forEach((row) => {
+		const { url, title } = row.dataset as { url: string; title: string };
+		row.querySelectorAll<HTMLAnchorElement>("[data-share]").forEach((a) =>
+			a.addEventListener("click", () => (window as any).track?.("share", { method: a.dataset.share })),
+		);
+		const copy = row.querySelector<HTMLButtonElement>("[data-copy-link]")!;
+		copy.addEventListener("click", async () => {
+			if (navigator.share && matchMedia("(pointer: coarse)").matches) {
+				try {
+					await navigator.share({ url, title });
+					(window as any).track?.("share", { method: "native" });
+					return;
+				} catch {
+					/* cancelled or unsupported: fall through to copy */
+				}
+			}
+			try {
+				await navigator.clipboard.writeText(url);
+			} catch {
+				return;
+			}
+			(window as any).track?.("share", { method: "copy_link" });
+			copy.textContent = "Copied";
+			setTimeout(() => (copy.textContent = "Copy link"), 1500);
+		});
+	});
+</script>
