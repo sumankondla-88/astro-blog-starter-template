@@ -11,7 +11,6 @@ ogImage: ""
 featured: false
 draft: true
 ---
-<!-- OUTLINE ONLY: not drafted yet. Needs your real incident details before drafting. Keep draft: true until written. -->
 
 ## What changed
 

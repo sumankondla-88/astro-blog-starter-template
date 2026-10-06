@@ -4,11 +4,17 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import expressiveCode from "astro-expressive-code";
 import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
+import keystatic from "@keystatic/astro";
 import { remarkNote } from "./src/plugins/remark-note.mjs";
 
 // https://astro.build/config
 export default defineConfig({
 	site: "https://sumankondla.com",
+	vite: {
+		// Keystatic imports Astro's virtual `astro:env/server`, which Vite's dependency scan cannot resolve.
+		optimizeDeps: { exclude: ["@keystatic/astro"] },
+	},
 	markdown: { remarkPlugins: [remarkNote] },
 	integrations: [
 		expressiveCode({
@@ -41,6 +47,8 @@ export default defineConfig({
 			},
 		}),
 		mdx(),
+		react(),
+		keystatic(),
 		sitemap({ filter: (page) => !page.includes("/plan/") }),
 	],
 	adapter: cloudflare({

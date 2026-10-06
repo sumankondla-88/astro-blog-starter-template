@@ -11,7 +11,6 @@ ogImage: ""
 featured: false
 draft: true
 ---
-<!-- OUTLINE ONLY: not drafted yet. Keep draft: true until written. -->
 
 ## Measuring tokens per request
 
