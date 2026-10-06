@@ -2,17 +2,24 @@ import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 
+// Treat empty strings (from Keystatic / frontmatter placeholders) as unset.
+const optionalString = z.preprocess((v) => (v === "" ? undefined : v), z.string().optional());
+
 const blog = defineCollection({
-	// Load Markdown and MDX files in the `src/content/blog/` directory.
 	loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
-	// Type-check frontmatter using a schema
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
-		// Transform string to Date object
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
-		heroImage: z.string().optional(),
+		category: z.enum(["iac", "devops", "ai", "security", "finops", "saas", "network", "wordpress", "field"]),
+		format: z.enum(["How-to", "Opinion", "War story", "Checklist"]),
+		heroImage: optionalString,
+		seoTitle: optionalString,
+		seoDescription: optionalString,
+		ogImage: optionalString,
+		featured: z.boolean().default(false),
+		draft: z.boolean().default(false),
 	}),
 });
 

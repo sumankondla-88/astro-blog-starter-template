@@ -1,21 +1,228 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
-import { render } from 'astro:content';
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Pattern from "../../components/Pattern.astro";
+import Cover from "../../components/Cover.astro";
+import ShareRow from "../../components/ShareRow.astro";
+import AuthorBox from "../../components/AuthorBox.astro";
+import Giscus from "../../components/Giscus.astro";
+import Newsletter from "../../components/Newsletter.astro";
+import { AUTHOR } from "../../consts";
+import { categoryBySlug, formatDate, getPosts, publicFileExists, readMinutes, type Post } from "../../lib/posts";
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+	const posts = await getPosts();
+	return posts.map((post, i) => {
+		// Read next: the following two posts, wrapping around, never the post itself.
+		const next: Post[] = [];
+		for (let k = 1; k < posts.length && next.length < 2; k++) next.push(posts[(i + k) % posts.length]);
+		return { params: { slug: post.id }, props: { post, next } };
+	});
 }
-type Props = CollectionEntry<'blog'>;
 
-const post = Astro.props;
-const { Content } = await render(post);
+const { post, next } = Astro.props as { post: Post; next: Post[] };
+const { data } = post;
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
+const category = categoryBySlug(data.category);
+const minutes = readMinutes(post.body);
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = data.ogImage || (publicFileExists(data.heroImage) ? data.heroImage : undefined);
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<BaseLayout
+	title={data.seoTitle || data.title}
+	description={data.seoDescription || data.description}
+	image={ogImage}
+	type="article"
+	pubDate={data.pubDate}
+	modDate={data.updatedDate}
+	section={category.label}
+	jsonLd
+>
+	<main>
+		<article>
+			<header class="head has-pattern">
+				<Pattern area="article" />
+				<div class="container inner">
+					<a class="back" href="/">← All writing</a>
+					<div class="eyebrow">{category.label} · {data.format}{data.draft && " · DRAFT"}</div>
+					<h1>{data.title}</h1>
+					<p class="lede">{data.description}</p>
+					<div class="byline">
+						<span class="author">{AUTHOR}</span> · <span>{formatDate(data.pubDate)}</span> · <span>{minutes} min read</span>
+					</div>
+					<ShareRow url={url} title={data.title} />
+					<Cover src={data.heroImage} category={data.category} ratio="16/8" radius={16} eager />
+				</div>
+			</header>
+
+			<div class="container body">
+				{
+					toc.length > 0 && (
+						<aside class="toc" aria-label="On this page">
+							<div class="mono toc-label">On this page</div>
+							{toc.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+						</aside>
+					)
+				}
+				<div class="col">
+					<div class="prose" data-slug={post.id}>
+						<Content />
+					</div>
+					<ShareRow url={url} title={data.title} />
+					<AuthorBox />
+					<Giscus />
+				</div>
+			</div>
+		</article>
+
+		{
+			next.length > 0 && (
+				<section class="container readnext">
+					<h2 class="eyebrow">Read next</h2>
+					<div class="next-grid">
+						{next.map((n) => (
+							<article>
+								<div class="eyebrow">
+									{categoryBySlug(n.data.category).label} · {formatDate(n.data.pubDate)}
+								</div>
+								<h3>
+									<a href={`/blog/${n.id}/`}>{n.data.title}</a>
+								</h3>
+							</article>
+						))}
+					</div>
+				</section>
+			)
+		}
+		<Newsletter />
+	</main>
+</BaseLayout>
+
+<style>
+	.head {
+		padding: 56px 0 8px;
+	}
+	.inner {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 22px;
+	}
+	.inner > :global(.cover) {
+		align-self: stretch;
+	}
+	.back {
+		font-size: 14px;
+		color: var(--muted);
+		text-decoration: none;
+	}
+	h1 {
+		font-size: clamp(34px, 4.8vw, 58px);
+		line-height: 1.05;
+		letter-spacing: -0.032em;
+		max-width: 20ch;
+		text-wrap: balance;
+	}
+	.lede {
+		margin: 0;
+		max-width: 60ch;
+		font-family: var(--serif);
+		font-size: 21px;
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	.byline {
+		font-size: 14px;
+		color: var(--muted);
+	}
+	.byline .author {
+		color: var(--fg);
+		font-weight: 500;
+	}
+	.body {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 40px 64px;
+		padding-top: 56px;
+		padding-bottom: 72px;
+		align-items: flex-start;
+	}
+	.toc {
+		flex: 0 0 200px;
+		position: sticky;
+		top: 96px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.toc-label {
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--faint);
+	}
+	.toc a {
+		font-size: 14px;
+		line-height: 1.4;
+		color: var(--muted);
+		text-decoration: none;
+	}
+	.toc a:hover {
+		color: var(--fg);
+	}
+	.col {
+		flex: 1 1 520px;
+		max-width: 680px;
+		min-width: 0;
+	}
+	.col > :global(.share) {
+		margin-top: 40px;
+	}
+	.readnext {
+		border-top: 1px solid var(--line);
+		padding-top: 40px;
+		padding-bottom: 64px;
+	}
+	.next-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+		gap: 32px;
+		margin-top: 20px;
+	}
+	.next-grid article {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		border-top: 1px solid var(--line);
+		padding-top: 20px;
+	}
+	h3 {
+		font-size: 20px;
+		line-height: 1.25;
+		letter-spacing: -0.015em;
+		text-wrap: balance;
+	}
+	h3 a {
+		text-decoration: none;
+	}
+</style>
+
+<script>
+	// Smooth-scroll TOC links with header offset; track code copies.
+	document.querySelectorAll<HTMLAnchorElement>(".toc a").forEach((a) =>
+		a.addEventListener("click", (e) => {
+			const target = document.getElementById(decodeURIComponent(a.hash.slice(1)));
+			if (!target) return;
+			e.preventDefault();
+			window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 84, behavior: "smooth" });
+			history.replaceState(null, "", a.hash);
+		}),
+	);
+	document.addEventListener("click", (e) => {
+		if ((e.target as HTMLElement).closest(".expressive-code .copy button")) {
+			(window as any).track?.("copy_code", { slug: document.querySelector<HTMLElement>(".prose")?.dataset.slug });
+		}
+	});
+</script>

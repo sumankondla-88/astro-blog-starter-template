@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Listing from "../../components/Listing.astro";
+import Newsletter from "../../components/Newsletter.astro";
+import { categories, categoryBySlug, getPosts } from "../../lib/posts";
+
+export function getStaticPaths() {
+	return categories.map((c) => ({ params: { slug: c.slug } }));
+}
+
+const { slug } = Astro.params;
+const category = categoryBySlug(slug!);
+const posts = (await getPosts()).filter((p) => p.data.category === slug);
+---
+
+<BaseLayout title={category.label} description={category.description}>
+	<main>
+		<section class="container intro">
+			<div class="eyebrow">Category</div>
+			<h1>{category.label}</h1>
+			<p>{category.description}</p>
+		</section>
+		<Listing posts={posts} category={slug} />
+		<Newsletter />
+	</main>
+</BaseLayout>
+
+<style>
+	.intro {
+		padding-top: 64px;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	h1 {
+		font-size: clamp(34px, 4.4vw, 52px);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+	}
+	p {
+		margin: 0;
+		max-width: 60ch;
+		font-family: var(--serif);
+		font-size: 21px;
+		line-height: 1.5;
+		color: var(--muted);
+	}
+</style>

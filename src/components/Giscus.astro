@@ -1,0 +1,72 @@
+---
+// Comments via giscus (GitHub Discussions). Renders only when the IDs are configured:
+// PUBLIC_GISCUS_REPO, PUBLIC_GISCUS_REPO_ID, PUBLIC_GISCUS_CATEGORY_ID (category "Comments").
+const repo = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+const configured = !!(repo && repoId && categoryId);
+---
+
+<section class="discussion">
+	<h2>Discussion</h2>
+	<p class="helper">Questions, corrections, and your own war stories are welcome.</p>
+	{configured && <div class="giscus" data-repo={repo} data-repo-id={repoId} data-category-id={categoryId}></div>}
+</section>
+
+<style>
+	.discussion {
+		margin-top: 8px;
+	}
+	h2 {
+		font-size: 24px;
+		letter-spacing: -0.02em;
+	}
+	.helper {
+		margin: 8px 0 24px;
+		color: var(--muted);
+		font-size: 15px;
+	}
+</style>
+
+<script>
+	const host = document.querySelector<HTMLElement>(".giscus");
+	if (host) {
+		const theme = () => (document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+		const load = () => {
+			const s = document.createElement("script");
+			s.src = "https://giscus.app/client.js";
+			s.async = true;
+			s.crossOrigin = "anonymous";
+			const attrs: Record<string, string> = {
+				"data-repo": host.dataset.repo!,
+				"data-repo-id": host.dataset.repoId!,
+				"data-category": "Comments",
+				"data-category-id": host.dataset.categoryId!,
+				"data-mapping": "pathname",
+				"data-strict": "0",
+				"data-reactions-enabled": "1",
+				"data-emit-metadata": "0",
+				"data-input-position": "top",
+				"data-theme": theme(),
+				"data-lang": "en",
+				"data-loading": "lazy",
+			};
+			Object.entries(attrs).forEach(([k, v]) => s.setAttribute(k, v));
+			host.appendChild(s);
+		};
+		// Lazy-load when the section approaches the viewport.
+		new IntersectionObserver((entries, obs) => {
+			if (entries.some((e) => e.isIntersecting)) {
+				obs.disconnect();
+				load();
+			}
+		}, { rootMargin: "400px" }).observe(host);
+
+		window.addEventListener("sk-theme", () => {
+			host.querySelector<HTMLIFrameElement>("iframe.giscus-frame")?.contentWindow?.postMessage(
+				{ giscus: { setConfig: { theme: theme() } } },
+				"https://giscus.app",
+			);
+		});
+	}
+</script>

@@ -1,0 +1,56 @@
+---
+import { AUTHOR, AUTHOR_BIO } from "../consts";
+import { publicFileExists } from "../lib/posts";
+// Drop the headshot at public/images/suman.jpg and it is picked up automatically.
+const photo = "/images/suman.jpg";
+const has = publicFileExists(photo);
+---
+
+<div class="author">
+	{has ? <img src={photo} alt={AUTHOR} width="56" height="56" /> : <span class="avatar mono" aria-hidden="true">SK</span>}
+	<div>
+		<div class="name">{AUTHOR}</div>
+		<p>{AUTHOR_BIO} <a href="/about/">More about me</a></p>
+	</div>
+</div>
+
+<style>
+	.author {
+		display: flex;
+		gap: 16px;
+		align-items: flex-start;
+		border-top: 1px solid var(--line);
+		padding-top: 28px;
+		margin: 56px 0 40px;
+	}
+	img,
+	.avatar {
+		flex: none;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+	.avatar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		font-size: 15px;
+		font-weight: 500;
+	}
+	.name {
+		font-size: 16px;
+		font-weight: 600;
+	}
+	p {
+		margin: 4px 0 0;
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	a {
+		color: var(--fg);
+	}
+</style>

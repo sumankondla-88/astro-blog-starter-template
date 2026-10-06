@@ -1,0 +1,116 @@
+---
+import Pattern from "./Pattern.astro";
+// Provider TBD (Buttondown / Beehiiv / Mailchimp). Set PUBLIC_NEWSLETTER_ENDPOINT to the
+// provider's form-post URL, or to a Worker route that holds the API key as a secret.
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT ?? "";
+---
+
+<section class="band has-pattern">
+	<Pattern area="newsletter" />
+	<div class="container grid">
+		<div>
+			<h2>Get new posts by email.</h2>
+			<p>One email when a post goes live. Unsubscribe anytime.</p>
+		</div>
+		<form novalidate data-endpoint={endpoint}>
+			<div class="row">
+				<input type="email" name="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
+				<button class="subscribe" type="submit">Subscribe</button>
+			</div>
+			<p class="msg" role="status" aria-live="polite"></p>
+		</form>
+	</div>
+</section>
+
+<style>
+	.band {
+		border-top: 1px solid var(--line);
+		padding: 64px 0;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+		gap: 32px 48px;
+		align-items: center;
+	}
+	h2 {
+		font-size: clamp(26px, 3vw, 34px);
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+	}
+	p {
+		margin: 10px 0 0;
+		color: var(--muted);
+	}
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+	input {
+		flex: 1 1 220px;
+		height: 46px;
+		padding: 0 20px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--bg);
+		color: var(--fg);
+		font: inherit;
+		font-size: 15px;
+	}
+	input:focus {
+		outline: none;
+		border-color: var(--accent);
+	}
+	.subscribe {
+		height: 46px;
+		padding: 0 22px;
+		border: 0;
+		border-radius: 999px;
+		background: var(--accent);
+		color: var(--accent-fg);
+		font: inherit;
+		font-size: 15px;
+		font-weight: 500;
+		cursor: pointer;
+	}
+	.subscribe:hover {
+		opacity: 0.9;
+	}
+	.msg {
+		min-height: 1.5em;
+		margin: 10px 0 0;
+		font-size: 14px;
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLFormElement>(".band form").forEach((form) => {
+		const msg = form.querySelector<HTMLElement>(".msg")!;
+		form.addEventListener("submit", async (e) => {
+			e.preventDefault();
+			const email = (new FormData(form).get("email") as string).trim();
+			msg.style.color = "";
+			if (!/^\S+@\S+\.\S+$/.test(email)) {
+				msg.textContent = "Enter a valid email address.";
+				msg.style.color = "#c0392b";
+				return;
+			}
+			const endpoint = form.dataset.endpoint;
+			if (!endpoint) {
+				msg.textContent = "Subscriptions aren't open yet. Check back soon.";
+				return;
+			}
+			try {
+				// no-cors: provider form endpoints don't send CORS headers, so the response is opaque.
+				await fetch(endpoint, { method: "POST", body: new FormData(form), mode: "no-cors" });
+				msg.textContent = `You’re subscribed. The next post will arrive at ${email}.`;
+				form.reset();
+				(window as any).track?.("newsletter_signup");
+			} catch {
+				msg.textContent = "Something went wrong. Please try again.";
+				msg.style.color = "#c0392b";
+			}
+		});
+	});
+</script>

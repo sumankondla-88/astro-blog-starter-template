@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "iac",
+    "label": "Infrastructure & IaC",
+    "description": "Bicep, ARM, and the modules, registries, and review habits that keep Azure estates reproducible."
+  },
+  {
+    "slug": "devops",
+    "label": "DevOps",
+    "description": "Azure DevOps and GitHub Actions pipelines that ship safely and roll back fast."
+  },
+  {
+    "slug": "ai",
+    "label": "AI & agents",
+    "description": "Azure AI Foundry, Azure OpenAI, AI Search, and running agents in production."
+  },
+  {
+    "slug": "security",
+    "label": "Security",
+    "description": "Entra ID, managed identities, and compliance work such as CMMC on Azure Government."
+  },
+  {
+    "slug": "finops",
+    "label": "FinOps",
+    "description": "Reading the bill, setting guardrails, and the changes that actually lower spend."
+  },
+  {
+    "slug": "saas",
+    "label": "SaaS architecture",
+    "description": "Multi-tenant design on Azure: isolation, onboarding, and per-tenant cost."
+  },
+  {
+    "slug": "network",
+    "label": "Networking",
+    "description": "Landing zones, private endpoints, DNS, and the network decisions that are hard to undo."
+  },
+  {
+    "slug": "wordpress",
+    "label": "WordPress",
+    "description": "Running WordPress on Azure: App Service, Azure Database for MySQL, caching, security hardening, and deployments."
+  },
+  {
+    "slug": "field",
+    "label": "Field notes",
+    "description": "Production incidents and what changed afterwards."
+  }
+]
