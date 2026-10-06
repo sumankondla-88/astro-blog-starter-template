@@ -3,7 +3,7 @@
 import Cover from "./Cover.astro";
 import PostCard from "./PostCard.astro";
 import CategoryChips from "./CategoryChips.astro";
-import { categoryBySlug, formatDate, readMinutes, type Post } from "../lib/posts";
+import { categoryBySlug, coverPath, formatDate, readMinutes, type Post } from "../lib/posts";
 
 interface Props {
 	posts: Post[];
@@ -18,7 +18,7 @@ const grid = posts.filter((p) => p !== featured);
 	featured && (
 		<section class="featured container">
 			<a class="cover-link" href={`/blog/${featured.id}/`} tabindex="-1" aria-hidden="true">
-				<Cover src={featured.data.heroImage} category={featured.data.category} ratio="16/10" radius={14} eager />
+				<Cover src={coverPath(featured)} category={featured.data.category} ratio="16/10" radius={14} eager />
 			</a>
 			<div class="text">
 				<div class="eyebrow">

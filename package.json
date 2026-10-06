@@ -14,16 +14,25 @@
 	"dependencies": {
 		"@astrojs/cloudflare": "12.6.12",
 		"@astrojs/mdx": "4.3.13",
+		"@astrojs/react": "^4.4.2",
 		"@astrojs/rss": "4.0.14",
 		"@astrojs/sitemap": "3.6.1",
 		"@fontsource-variable/newsreader": "^5.3.0",
 		"@fontsource/instrument-sans": "^5.3.0",
 		"@fontsource/jetbrains-mono": "^5.3.0",
+		"@keystatic/astro": "^6.0.0",
+		"@keystatic/core": "^0.6.9",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
 		"astro": "5.16.9",
 		"astro-expressive-code": "^0.44.2",
+		"jose": "^6.2.12",
+		"react": "^19.3.0",
+		"react-dom": "^19.3.0",
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
+		"patch-package": "^8.0.1",
 		"wrangler": "4.56.0"
 	},
 	"engines": {
@@ -37,7 +46,8 @@
 		"check": "astro build && tsc && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
 		"dev": "astro dev",
-		"preview": "astro build && wrangler dev"
+		"preview": "astro build && wrangler dev",
+		"postinstall": "patch-package"
 	},
 	"type": "module"
 }

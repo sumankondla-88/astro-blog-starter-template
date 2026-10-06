@@ -1,6 +1,6 @@
 ---
 import Cover from "./Cover.astro";
-import { categoryBySlug, formatDate, type Post } from "../lib/posts";
+import { categoryBySlug, coverPath, formatDate, type Post } from "../lib/posts";
 
 interface Props {
 	post: Post;
@@ -11,7 +11,7 @@ const href = `/blog/${post.id}/`;
 ---
 
 <article class="card">
-	<a href={href} class="cover-link" tabindex="-1" aria-hidden="true"><Cover src={data.heroImage} category={data.category} /></a>
+	<a href={href} class="cover-link" tabindex="-1" aria-hidden="true"><Cover src={coverPath(post)} category={data.category} /></a>
 	<div class="eyebrow">{categoryBySlug(data.category).label} · {data.format}{data.draft && " · DRAFT"}</div>
 	<h3><a href={href}>{data.title}</a></h3>
 	<p>{data.description}</p>

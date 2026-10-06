@@ -1,0 +1,13 @@
+diff --git a/node_modules/@keystatic/core/dist/index-3c244051.js b/node_modules/@keystatic/core/dist/index-3c244051.js
+index 233c8ca..b7abb5d 100644
+--- a/node_modules/@keystatic/core/dist/index-3c244051.js
++++ b/node_modules/@keystatic/core/dist/index-3c244051.js
+@@ -27352,7 +27352,7 @@ function proseMirrorToMDX(node, state) {
+     let lang = typeof node.attrs.language === 'string' && node.attrs.language !== 'plain' ? node.attrs.language : undefined;
+     let meta = null;
+     if ((_lang = lang) !== null && _lang !== void 0 && _lang.includes(' ')) {
+-      [lang, meta] = lang.split(' ', 2);
++      { let i = lang.indexOf(' '); meta = lang.slice(i + 1); lang = lang.slice(0, i); }
+     }
+     return {
+       type: 'code',

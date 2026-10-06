@@ -37,6 +37,9 @@ const shortFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeri
 export const formatDate = (d: Date) => dateFmt.format(d);
 export const formatShortDate = (d: Date) => shortFmt.format(d);
 
+/** Cover path: explicit heroImage, else the /images/covers/<slug>.jpg convention. */
+export const coverPath = (post: Post) => post.data.heroImage || `/images/covers/${post.id}.jpg`;
+
 /** True when a file exists under /public (checked at build time). */
 export function publicFileExists(path?: string): boolean {
 	if (!path) return false;
