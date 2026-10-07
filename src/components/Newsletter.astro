@@ -1,8 +1,7 @@
 ---
 import Pattern from "./Pattern.astro";
-// Provider TBD (Buttondown / Beehiiv / Mailchimp). Set PUBLIC_NEWSLETTER_ENDPOINT to the
-// provider's form-post URL, or to a Worker route that holds the API key as a secret.
-const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT ?? "";
+// Posts to /api/subscribe, a Worker route that adds the address to a Brevo list (see NEWSLETTER.md).
+const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || "/api/subscribe";
 ---
 
 <section class="band has-pattern">
@@ -15,6 +14,7 @@ const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT ?? "";
 		<form novalidate data-endpoint={endpoint}>
 			<div class="row">
 				<input type="email" name="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
+				<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 				<button class="subscribe" type="submit">Subscribe</button>
 			</div>
 			<p class="msg" role="status" aria-live="polite"></p>
@@ -77,6 +77,13 @@ const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT ?? "";
 	.subscribe:hover {
 		opacity: 0.9;
 	}
+	.hp {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		opacity: 0;
+	}
 	.msg {
 		min-height: 1.5em;
 		margin: 10px 0 0;
@@ -96,20 +103,35 @@ const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT ?? "";
 				msg.style.color = "#c0392b";
 				return;
 			}
-			const endpoint = form.dataset.endpoint;
-			if (!endpoint) {
-				msg.textContent = "Subscriptions aren't open yet. Check back soon.";
-				return;
-			}
+			const endpoint = form.dataset.endpoint!;
+			const btn = form.querySelector<HTMLButtonElement>(".subscribe")!;
+			btn.disabled = true;
 			try {
-				// no-cors: provider form endpoints don't send CORS headers, so the response is opaque.
-				await fetch(endpoint, { method: "POST", body: new FormData(form), mode: "no-cors" });
-				msg.textContent = `You’re subscribed. The next post will arrive at ${email}.`;
-				form.reset();
-				(window as any).track?.("newsletter_signup");
+				const res = await fetch(endpoint, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ email, website: new FormData(form).get("website") }),
+				});
+				const out = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; confirm?: boolean };
+				if (res.ok && out.ok) {
+					msg.textContent = out.confirm
+						? `Almost there. Check ${email} for a confirmation email and click the link.`
+						: `You’re subscribed. The next post will arrive at ${email}.`;
+					form.reset();
+					(window as any).track?.("newsletter_signup");
+				} else if (out.error === "not_configured") {
+					msg.textContent = "Subscriptions aren't open yet. Check back soon.";
+				} else if (out.error === "invalid_email") {
+					msg.textContent = "Enter a valid email address.";
+					msg.style.color = "#c0392b";
+				} else {
+					throw new Error(out.error || String(res.status));
+				}
 			} catch {
 				msg.textContent = "Something went wrong. Please try again.";
 				msg.style.color = "#c0392b";
+			} finally {
+				btn.disabled = false;
 			}
 		});
 	});

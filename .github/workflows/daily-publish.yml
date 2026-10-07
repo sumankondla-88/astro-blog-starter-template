@@ -1,0 +1,22 @@
+# Rebuilds the site once a day so scheduled posts go live on their day (see SCHEDULE.md).
+# Calls the Cloudflare Workers Builds deploy hook, so the normal build (with its variables) runs.
+name: Daily publish
+
+on:
+  schedule:
+    - cron: "0 13 * * *" # 13:00 UTC daily (9am US Eastern)
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare build
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "DEPLOY_HOOK_URL secret is not set. See SCHEDULE.md." >&2
+            exit 1
+          fi
+          curl -fsS -X POST "$DEPLOY_HOOK_URL"
