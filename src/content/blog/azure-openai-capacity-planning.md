@@ -4,7 +4,6 @@ description: "Estimating token throughput, choosing between pay-as-you-go and pr
 pubDate: 2026-11-19
 category: ai
 format: "How-to"
-heroImage: "/images/covers/azure-openai-capacity-planning.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

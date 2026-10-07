@@ -4,7 +4,6 @@ description: "Inbound private endpoints, outbound VNet integration, private DNS 
 pubDate: 2026-10-29
 category: network
 format: "How-to"
-heroImage: "/images/covers/private-endpoints-app-service-functions.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

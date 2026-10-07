@@ -4,7 +4,6 @@ description: "Where each tool is the better choice for Azure-only teams, multi-c
 pubDate: 2026-10-27
 category: iac
 format: "Opinion"
-heroImage: "/images/covers/bicep-vs-terraform-2026.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""
