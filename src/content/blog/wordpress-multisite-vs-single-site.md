@@ -5,9 +5,9 @@ pubDate: 2026-12-08
 category: wordpress
 format: "Opinion"
 heroImage: "/images/covers/wordpress-multisite-vs-single-site.jpg"
-seoTitle: ""
-seoDescription: ""
-ogImage: ""
+seoTitle: "WordPress Multisite vs Single Site Checklist"
+seoDescription: "What WordPress Multisite shares, where it saves work and where it adds risk, plus a checklist for choosing Multisite or separate sites."
+ogImage: "/images/og/wordpress-multisite-vs-single-site.png"
 featured: false
 draft: false
 ---
