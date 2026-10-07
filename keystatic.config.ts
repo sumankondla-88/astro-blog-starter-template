@@ -1,4 +1,4 @@
-import { config, fields, collection } from "@keystatic/core";
+import { config, fields, collection, singleton } from "@keystatic/core";
 import categories from "./src/data/categories.json";
 
 export default config({
@@ -10,6 +10,35 @@ export default config({
 			? { kind: "github", repo: "sumankondla-88/astro-blog-starter-template" }
 			: { kind: "local" },
 	ui: { brand: { name: "Suman Kondla · notes" } },
+	singletons: {
+		// One post goes live per day, in this order, starting on the start date. See SCHEDULE.md.
+		schedule: singleton({
+			label: "Publishing schedule",
+			path: "src/data/schedule",
+			format: { data: "json" },
+			schema: {
+				enabled: fields.checkbox({
+					label: "Publish automatically on this schedule",
+					description: "When off, posts use their own publish dates.",
+					defaultValue: false,
+				}),
+				startDate: fields.date({
+					label: "First post goes live on",
+					description: "The first post in the list publishes on this date; each next one a day later.",
+				}),
+				skipWeekends: fields.checkbox({ label: "Skip Saturdays and Sundays", defaultValue: false }),
+				posts: fields.array(
+					fields.relationship({ label: "Post", collection: "posts", validation: { isRequired: true } }),
+					{
+						label: "Publishing order",
+						description:
+							"Drag to reorder. A post still marked Draft is skipped until you untick Draft; it then publishes on the next daily build.",
+						itemLabel: (props) => props.value ?? "Choose a post",
+					},
+				),
+			},
+		}),
+	},
 	collections: {
 		posts: collection({
 			label: "Posts",

@@ -1,0 +1,22 @@
+{
+  "enabled": false,
+  "skipWeekends": false,
+  "posts": [
+    "zero-downtime-deployments-azure",
+    "multi-tenant-ai-assistant-production",
+    "cutting-azure-spend",
+    "rag-azure-ai-search-production",
+    "bicep-vs-terraform-2026",
+    "private-endpoints-app-service-functions",
+    "securing-ai-agents-entra-workload-identities",
+    "cmmc-azure-government-checklist",
+    "tenant-isolation-patterns-azure",
+    "landing-zone-one-page",
+    "bicep-modules-registries-what-if",
+    "azure-openai-capacity-planning",
+    "github-actions-oidc-azure",
+    "private-dns-blast-radius",
+    "finops-guardrails-azure-policy",
+    "wordpress-multisite-vs-single-site"
+  ]
+}

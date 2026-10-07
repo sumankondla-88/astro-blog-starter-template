@@ -211,16 +211,20 @@ h3 {
 	counter-reset: li;
 }
 .prose li {
-	display: grid;
-	grid-template-columns: 28px 1fr;
+	position: relative;
+	padding-left: 28px;
 	margin-bottom: 8px;
 }
-.prose li > * {
-	grid-column: 2;
+.prose li > p {
+	margin: 0 0 8px;
+}
+.prose li > ul,
+.prose li > ol {
+	margin: 8px 0 0;
 }
 .prose li::before {
-	grid-column: 1;
-	grid-row: 1;
+	position: absolute;
+	left: 0;
 	color: var(--accent);
 }
 .prose ul > li::before {
@@ -233,7 +237,7 @@ h3 {
 	content: counter(li, decimal-leading-zero);
 	font-family: var(--mono);
 	font-size: 13px;
-	line-height: 2.6;
+	top: 0.35em;
 }
 .prose :not(pre) > code {
 	font-family: var(--mono);

@@ -7,6 +7,7 @@ import ShareRow from "../../components/ShareRow.astro";
 import AuthorBox from "../../components/AuthorBox.astro";
 import Giscus from "../../components/Giscus.astro";
 import Newsletter from "../../components/Newsletter.astro";
+import PostCard from "../../components/PostCard.astro";
 import { AUTHOR } from "../../consts";
 import { categoryBySlug, coverPath, formatDate, getPosts, publicFileExists, readMinutes, type Post } from "../../lib/posts";
 
@@ -82,16 +83,7 @@ const ogImage = data.ogImage || (publicFileExists(coverPath(post)) ? coverPath(p
 				<section class="container readnext">
 					<h2 class="eyebrow">Read next</h2>
 					<div class="next-grid">
-						{next.map((n) => (
-							<article>
-								<div class="eyebrow">
-									{categoryBySlug(n.data.category).label} · {formatDate(n.data.pubDate)}
-								</div>
-								<h3>
-									<a href={`/blog/${n.id}/`}>{n.data.title}</a>
-								</h3>
-							</article>
-						))}
+						{next.map((n) => <PostCard post={n} />)}
 					</div>
 				</section>
 			)
@@ -187,25 +179,9 @@ const ogImage = data.ogImage || (publicFileExists(coverPath(post)) ? coverPath(p
 	}
 	.next-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
 		gap: 32px;
 		margin-top: 20px;
-	}
-	.next-grid article {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		border-top: 1px solid var(--line);
-		padding-top: 20px;
-	}
-	h3 {
-		font-size: 20px;
-		line-height: 1.25;
-		letter-spacing: -0.015em;
-		text-wrap: balance;
-	}
-	h3 a {
-		text-decoration: none;
 	}
 </style>
 
