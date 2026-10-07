@@ -4,7 +4,6 @@ description: "Chunking, hybrid search, semantic ranking, evaluation sets, and th
 pubDate: 2026-10-22
 category: ai
 format: "How-to"
-heroImage: "/images/covers/rag-azure-ai-search-production.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

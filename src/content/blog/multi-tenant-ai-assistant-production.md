@@ -4,7 +4,6 @@ description: "Tenant isolation, token budgets, and retrieval quality looked solv
 pubDate: 2026-10-19
 category: field
 format: "War story"
-heroImage: "/images/covers/multi-tenant-ai-assistant-production.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

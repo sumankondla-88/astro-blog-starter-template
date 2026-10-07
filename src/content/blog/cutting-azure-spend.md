@@ -4,7 +4,6 @@ description: "Ten specific changes ranked by how much they saved, with the queri
 pubDate: 2026-10-19
 category: finops
 format: "How-to"
-heroImage: "/images/covers/cutting-azure-spend.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

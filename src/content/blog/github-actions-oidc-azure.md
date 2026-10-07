@@ -4,7 +4,6 @@ description: "Replace service principal secrets with federated credentials acros
 pubDate: 2026-11-24
 category: devops
 format: "How-to"
-heroImage: "/images/covers/github-actions-oidc-azure.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

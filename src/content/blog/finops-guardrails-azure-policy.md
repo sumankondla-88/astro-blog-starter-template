@@ -4,7 +4,6 @@ description: "Enforce tags at deployment, set budgets that alert the right owner
 pubDate: 2026-12-03
 category: finops
 format: "How-to"
-heroImage: "/images/covers/finops-guardrails-azure-policy.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

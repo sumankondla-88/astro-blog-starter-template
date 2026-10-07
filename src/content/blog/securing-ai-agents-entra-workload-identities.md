@@ -4,7 +4,6 @@ description: "Give every agent its own identity, scope its permissions to the to
 pubDate: 2026-11-03
 category: security
 format: "How-to"
-heroImage: "/images/covers/securing-ai-agents-entra-workload-identities.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

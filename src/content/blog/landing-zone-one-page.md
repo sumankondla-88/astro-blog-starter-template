@@ -4,7 +4,6 @@ description: "The management groups, subscriptions, policies, and network topolo
 pubDate: 2026-11-12
 category: network
 format: "How-to"
-heroImage: "/images/covers/landing-zone-one-page.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

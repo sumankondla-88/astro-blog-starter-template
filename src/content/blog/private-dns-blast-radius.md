@@ -4,7 +4,6 @@ description: "A postmortem on how a single shared private DNS zone change affect
 pubDate: 2026-12-01
 category: field
 format: "War story"
-heroImage: "/images/covers/private-dns-blast-radius.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

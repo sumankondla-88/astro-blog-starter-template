@@ -4,7 +4,6 @@ description: "How to choose between shared, dedicated, and mixed tenancy for com
 pubDate: 2026-11-10
 category: saas
 format: "Opinion"
-heroImage: "/images/covers/tenant-isolation-patterns-azure.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

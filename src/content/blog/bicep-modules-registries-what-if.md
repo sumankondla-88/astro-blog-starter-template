@@ -4,7 +4,6 @@ description: "Publishing modules to a private registry, versioning them, and run
 pubDate: 2026-11-17
 category: iac
 format: "How-to"
-heroImage: "/images/covers/bicep-modules-registries-what-if.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""

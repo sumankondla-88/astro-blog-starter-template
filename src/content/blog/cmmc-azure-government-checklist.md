@@ -4,7 +4,6 @@ description: "A control-by-control map from CMMC Level 2 practices to Azure Gove
 pubDate: 2026-11-05
 category: security
 format: "Checklist"
-heroImage: "/images/covers/cmmc-azure-government-checklist.jpg"
 seoTitle: ""
 seoDescription: ""
 ogImage: ""
