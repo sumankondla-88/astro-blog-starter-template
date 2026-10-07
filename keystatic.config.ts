@@ -7,7 +7,7 @@ export default config({
 	// Set PUBLIC_KEYSTATIC_STORAGE=github in `astro dev` to run the one-time GitHub App setup (see ADMIN.md).
 	storage:
 		import.meta.env.PROD || import.meta.env.PUBLIC_KEYSTATIC_STORAGE === "github"
-			? { kind: "github", repo: "sumankondla-88/astro-blog-starter-template" }
+			? { kind: "github", repo: "sumankondla-88/sumankondla-blog" }
 			: { kind: "local" },
 	ui: { brand: { name: "Suman Kondla · notes" } },
 	singletons: {

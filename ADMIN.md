@@ -12,7 +12,7 @@ default branch, and Workers Builds deploys it. **Cloudflare Access** (Zero Trust
    (`sumankondla-88`). Keystatic writes the four values below into `.env`.
 3. In GitHub → Settings → Developer settings → GitHub Apps → your app:
    - Add the callback URL `https://sumankondla.com/api/keystatic/github/oauth/callback`.
-   - Install the app on `astro-blog-starter-template` only.
+   - Install the app on `sumankondla-blog` only.
 4. Remove `PUBLIC_KEYSTATIC_STORAGE` from `.env` to go back to local file editing.
 
 ## 2. Worker configuration (Cloudflare dashboard)
