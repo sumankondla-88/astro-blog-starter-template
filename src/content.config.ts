@@ -13,7 +13,7 @@ const blog = defineCollection({
 		description: z.string(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.preprocess(unset, z.coerce.date().optional()),
-		category: z.enum(["iac", "devops", "ai", "security", "finops", "saas", "network", "wordpress", "field"]),
+		category: z.enum(["iac", "devops", "ai", "security", "finops", "saas", "network", "cloudflare", "aws", "gcp", "wordpress", "field"]),
 		format: z.enum(["How-to", "Opinion", "War story", "Checklist"]),
 		heroImage: optionalString,
 		seoTitle: optionalString,

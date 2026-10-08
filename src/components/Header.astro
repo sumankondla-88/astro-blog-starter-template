@@ -7,12 +7,20 @@ const aboutActive = path.startsWith("/about");
 
 <header>
 	<div class="container bar">
-		<a class="brand" href="/">Suman Kondla<span class="mono"> / notes</span></a>
-		<nav>
+		<a class="brand" href="/">
+			<img class="brand-logo logo-light" src="/images/logos/horizontal-light.png" alt="Architect's Notebook by Suman Kondla" />
+			<img class="brand-logo logo-dark" src="/images/logos/horizontal-dark.png" alt="Architect's Notebook by Suman Kondla" />
+		</a>
+		<nav id="site-navigation" data-mobile-menu>
 			<a href="/" class:list={{ active: writingActive }}>Writing</a>
 			<a href="/about/" class:list={{ active: aboutActive }}>About</a>
 			<ThemeToggle />
 		</nav>
+		<button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="site-navigation" aria-expanded="false" data-menu-toggle>
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M4 7h16M4 12h16M4 17h16" />
+			</svg>
+		</button>
 	</div>
 </header>
 
@@ -27,21 +35,33 @@ const aboutActive = path.startsWith("/about");
 		border-bottom: 1px solid var(--line);
 	}
 	.bar {
-		height: 64px;
+		height: 72px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		position: relative;
 	}
 	.brand {
-		white-space: nowrap;
-		font-size: 17px;
-		font-weight: 600;
+		display: flex;
+		align-items: center;
+		width: 150px;
+		max-width: calc(100vw - 96px);
 		text-decoration: none;
 	}
-	.brand .mono {
-		font-size: 12px;
-		color: var(--faint);
-		font-weight: 400;
+	.brand-logo {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
+	.logo-dark {
+		display: none;
+	}
+	:global(:root[data-theme="dark"]) .logo-light {
+		display: none;
+	}
+	:global(:root[data-theme="dark"]) .logo-dark {
+		display: block;
 	}
 	nav {
 		display: flex;
@@ -57,4 +77,102 @@ const aboutActive = path.startsWith("/about");
 	nav a.active {
 		color: var(--fg);
 	}
+	.menu-toggle {
+		display: none;
+		width: 40px;
+		height: 40px;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid var(--line);
+		border-radius: 50%;
+		background: transparent;
+		color: var(--fg);
+		cursor: pointer;
+	}
+	.menu-toggle:hover {
+		background: var(--surface);
+	}
+	.menu-toggle svg {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+	}
+	@media (max-width: 480px) {
+		.bar {
+			padding-left: 16px;
+			padding-right: 16px;
+		}
+		.brand {
+			width: 150px;
+		}
+		.bar {
+			height: 64px;
+		}
+		.menu-toggle {
+			display: inline-flex;
+		}
+		nav {
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			z-index: 21;
+			width: 100vw;
+			padding: 12px 24px 18px;
+			transform: translateX(-50%);
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0;
+			background: var(--bg);
+			border-bottom: 1px solid var(--line);
+			box-shadow: 0 12px 18px rgb(0 0 0 / 8%);
+		}
+		nav:not([data-open="true"]) {
+			display: none;
+		}
+		nav a {
+			padding: 12px 0;
+			border-bottom: 1px solid var(--line);
+		}
+		nav :global(.theme-toggle) {
+			margin-top: 12px;
+		}
+	}
 </style>
+
+<script>
+	const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+	const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+
+	if (menu && toggle) {
+		const closeMenu = (restoreFocus = false) => {
+			menu.dataset.open = "false";
+			toggle.setAttribute("aria-expanded", "false");
+			toggle.setAttribute("aria-label", "Open navigation");
+			if (restoreFocus) toggle.focus();
+		};
+
+		toggle.addEventListener("click", () => {
+			const isOpen = menu.dataset.open === "true";
+			if (isOpen) {
+				closeMenu();
+				return;
+			}
+
+			menu.dataset.open = "true";
+			toggle.setAttribute("aria-expanded", "true");
+			toggle.setAttribute("aria-label", "Close navigation");
+			menu.querySelector<HTMLAnchorElement>("a")?.focus();
+		});
+
+		menu.querySelectorAll<HTMLAnchorElement>("a").forEach((link) => {
+			link.addEventListener("click", () => closeMenu());
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape" && menu.dataset.open === "true") closeMenu(true);
+		});
+	}
+</script>

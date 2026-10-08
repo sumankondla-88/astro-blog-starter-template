@@ -31,4 +31,84 @@ const cfg = {
 <div class="pattern" style={`top:${cfg.top}`} aria-hidden="true">
 	<div class="dots" style={`-webkit-mask-image:${cfg.mask};mask-image:${cfg.mask}`}></div>
 	<div style={`background:${cfg.glow}`}></div>
+	{
+		area === "hero" && (
+			<svg class="infrastructure" viewBox="0 0 600 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<g class="connections">
+					<path d="M117 184 222 112l112 70 111-86M222 112l-18 161 130-91 24 157M334 182l111 83M204 273l130-91" />
+					<circle cx="117" cy="184" r="4" />
+					<circle cx="222" cy="112" r="4" />
+					<circle cx="334" cy="182" r="4" />
+					<circle cx="445" cy="96" r="4" />
+					<circle cx="204" cy="273" r="4" />
+					<circle cx="358" cy="339" r="4" />
+					<circle cx="445" cy="265" r="4" />
+				</g>
+				<g class="resource" transform="translate(76 143)">
+					<path d="M12 28h34a11 11 0 0 0 1-22 16 16 0 0 0-30 4 9 9 0 0 0-5 18Z" />
+					<path d="M17 19h24M20 25h18" />
+				</g>
+				<g class="resource" transform="translate(194 83)">
+					<rect x="5" y="5" width="42" height="42" rx="7" />
+					<path d="M13 16h26M13 26h26M13 36h17" />
+					<circle cx="36" cy="36" r="1.5" />
+				</g>
+				<g class="resource" transform="translate(305 153)">
+					<ellipse cx="27" cy="11" rx="21" ry="8" />
+					<path d="M6 11v25c0 4 9 8 21 8s21-4 21-8V11M6 23c0 4 9 8 21 8s21-4 21-8" />
+				</g>
+				<g class="resource" transform="translate(420 68)">
+					<path d="M27 4 47 12v14c0 13-9 22-20 27C16 48 7 39 7 26V12L27 4Z" />
+					<path d="m18 27 6 6 13-14" />
+				</g>
+				<g class="resource" transform="translate(178 245)">
+					<path d="m26 4 22 13v26L26 56 4 43V17L26 4Z" />
+					<path d="m4 17 22 13 22-13M26 30v26" />
+				</g>
+				<g class="resource" transform="translate(333 307)">
+					<circle cx="26" cy="26" r="22" />
+					<path d="M4 26h44M26 4c7 7 10 14 10 22s-3 15-10 22c-7-7-10-14-10-22S19 11 26 4Z" />
+				</g>
+				<g class="resource" transform="translate(420 238)">
+					<rect x="5" y="8" width="20" height="20" rx="3" />
+					<rect x="29" y="8" width="20" height="20" rx="3" />
+					<rect x="17" y="32" width="20" height="20" rx="3" />
+				</g>
+			</svg>
+		)
+	}
 </div>
+
+<style>
+	.infrastructure {
+		position: absolute;
+		top: 0;
+		right: max(2%, calc((100vw - 1120px) / 2));
+		width: min(54vw, 600px);
+		height: 100%;
+		color: var(--fg);
+		opacity: 0.16;
+	}
+	.connections {
+		stroke: var(--accent);
+		stroke-width: 1.5;
+		stroke-dasharray: 4 7;
+	}
+	.connections circle {
+		fill: var(--accent);
+		stroke: none;
+	}
+	.resource {
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	@media (max-width: 600px) {
+		.infrastructure {
+			right: -12%;
+			width: 76vw;
+			opacity: 0.1;
+		}
+	}
+</style>

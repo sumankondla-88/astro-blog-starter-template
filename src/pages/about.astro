@@ -11,7 +11,7 @@ const portrait = "/images/suman-portrait.jpg";
 const hasPortrait = publicFileExists(portrait);
 ---
 
-<BaseLayout title="About" description="Suman Kondla is a senior cloud solutions architect who designs and runs Azure environments for government portals, multi-tenant SaaS, and AI workloads.">
+<BaseLayout title="About" description="Suman Kondla is a senior cloud solutions architect writing about cloud infrastructure, DevOps, and AI workloads across Azure, AWS, Google Cloud, and Cloudflare.">
 	<main class="container page">
 		<section class="intro has-pattern">
 			<Pattern area="about" />
@@ -21,8 +21,8 @@ const hasPortrait = publicFileExists(portrait);
 			<div class="text">
 				<h1>About</h1>
 				<div class="copy">
-					<p>I’m Suman Kondla, a senior cloud solutions architect. I design and run Azure environments for government portals, multi-tenant SaaS products, and AI workloads.</p>
-					<p class="muted">Most of my work is infrastructure as code, deployment pipelines, identity, networking, and cost. This site is where I write up what I’ve built and what went wrong, with the code included so you can reuse it.</p>
+					<p>I’m Suman Kondla, a senior cloud solutions architect. I design and run cloud environments for government portals, multi-tenant SaaS products, and AI workloads.</p>
+					<p class="muted">This site covers infrastructure across Azure, AWS, Google Cloud, and Cloudflare, including infrastructure as code, deployment pipelines, identity, networking, and cost. I write up practical patterns, lessons learned, and code you can reuse.</p>
 					<p class="muted">Views here are my own and don’t represent my employer or clients.</p>
 				</div>
 				<div class="links">
@@ -137,6 +137,18 @@ const hasPortrait = publicFileExists(portrait);
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+	}
+	@media (max-width: 640px) {
+		.page {
+			padding-top: 48px;
+			gap: 56px;
+		}
+		.text {
+			grid-column: auto;
+		}
+		.copy {
+			font-size: 19px;
+		}
 	}
 	.topic a {
 		font-size: 18px;

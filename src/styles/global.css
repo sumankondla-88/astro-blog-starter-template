@@ -295,3 +295,30 @@ h3 {
 .prose img {
 	border-radius: 12px;
 }
+
+@media (max-width: 600px) {
+	.prose {
+		font-size: 18px;
+		line-height: 1.65;
+	}
+	.prose h2 {
+		font-size: 24px;
+		margin-top: 44px;
+	}
+	.prose h3 {
+		font-size: 20px;
+	}
+	.prose aside.note {
+		padding: 16px;
+		font-size: 16px;
+	}
+	.prose pre,
+	.prose table {
+		max-width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+	.prose table {
+		display: block;
+	}
+}

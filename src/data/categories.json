@@ -35,6 +35,21 @@
     "description": "Landing zones, private endpoints, DNS, and the network decisions that are hard to undo."
   },
   {
+    "slug": "cloudflare",
+    "label": "Cloudflare",
+    "description": "Cloudflare's CDN, DNS, security, Zero Trust, and Cloudflare One platform."
+  },
+  {
+    "slug": "aws",
+    "label": "AWS",
+    "description": "Amazon Web Services infrastructure, architecture, security, networking, and operations."
+  },
+  {
+    "slug": "gcp",
+    "label": "Google Cloud",
+    "description": "Google Cloud infrastructure, architecture, security, networking, and operations."
+  },
+  {
     "slug": "wordpress",
     "label": "WordPress",
     "description": "Running WordPress on Azure: App Service, Azure Database for MySQL, caching, security hardening, and deployments."

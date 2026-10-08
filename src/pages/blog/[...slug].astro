@@ -183,6 +183,45 @@ const ogImage = data.ogImage || (publicFileExists(coverPath(post)) ? coverPath(p
 		gap: 32px;
 		margin-top: 20px;
 	}
+	@media (max-width: 900px) {
+		.toc {
+			position: static;
+			flex: 1 1 100%;
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+			gap: 10px 16px;
+			padding: 16px;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			background: var(--surface);
+		}
+		.col {
+			flex-basis: 100%;
+		}
+	}
+	@media (max-width: 600px) {
+		.head {
+			padding-top: 36px;
+		}
+		.inner {
+			gap: 18px;
+		}
+		.lede {
+			font-size: 19px;
+		}
+		.body {
+			gap: 28px;
+			padding-top: 36px;
+			padding-bottom: 56px;
+		}
+		.toc {
+			grid-template-columns: 1fr;
+		}
+		.readnext {
+			padding-top: 32px;
+			padding-bottom: 48px;
+		}
+	}
 </style>
 
 <script>

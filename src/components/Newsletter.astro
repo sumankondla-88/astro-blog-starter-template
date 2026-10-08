@@ -89,6 +89,18 @@ const endpoint = import.meta.env.PUBLIC_NEWSLETTER_ENDPOINT || "/api/subscribe";
 		margin: 10px 0 0;
 		font-size: 14px;
 	}
+	@media (max-width: 480px) {
+		.band {
+			padding: 48px 0;
+		}
+		.row {
+			flex-direction: column;
+		}
+		input,
+		.subscribe {
+			width: 100%;
+		}
+	}
 </style>
 
 <script>
